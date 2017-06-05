@@ -28,3 +28,4 @@ build/
 classes/
 route_package_back_dubbo.registry.properties.lock
 .gitignore
+/class
