@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taotao.comment.mapper.CommentTagsMapper">
+
+
+	<resultMap type="commentTags" id="BaseResultMap">
+		<!-- id 主键映射 column :数据库的字段名 property：javabean的属性 -->
+		<id column="id" property="id" />
+		<!-- javabean普通属性映射 -->
+		<result column="name" property="name" />
+		<result column="status" property="status" />
+		<result column="rid" property="rid" />
+		<result column="product_id" property="productId" />
+		<result column="count" property="count" />
+		<result column="created" property="created" />
+		<result column="updated" property="modified" />
+	</resultMap>
+
+	<select id="findCommentTags"  resultMap="BaseResultMap">
+		SELECT *
+		FROM tb_tags WHERE product_id = #{itemId} ORDER BY count DESC LIMIT
+		0,9
+	</select>
+
+</mapper>

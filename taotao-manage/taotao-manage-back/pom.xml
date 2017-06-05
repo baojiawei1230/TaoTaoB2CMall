@@ -1,0 +1,192 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <artifactId>taotao-manage</artifactId>
+        <groupId>com.taotao.manage</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.taotao.manage</groupId>
+    <artifactId>taotao-manage-back</artifactId>
+    <packaging>war</packaging>
+    <name>taotao-manage-back</name>
+    <dependencies>
+        <dependency>
+            <groupId>com.taotao.manage</groupId>
+            <artifactId>taotao-manage-service</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.taotao.manage</groupId>
+            <artifactId>taotao-manage-pojo</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+            <version>${mybatis.spring.version}</version>
+        </dependency>
+        <!-- MySql -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
+        </dependency>
+        <!-- 连接池 -->
+        <dependency>
+            <groupId>com.jolbox</groupId>
+            <artifactId>bonecp-spring</artifactId>
+            <version>0.8.0.RELEASE</version>
+        </dependency>
+        <!-- JSP相关 -->
+        <dependency>
+            <groupId>jstl</groupId>
+            <artifactId>jstl</artifactId>
+            <version>${jstl.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>${servlet-api.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jsp-api</artifactId>
+            <version>${jsp-api.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.3.1</version>
+        </dependency>
+        <!-- 时间操作组件 -->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+    </dependencies>
+
+    <!--编译-->
+    <build>
+        <finalName>taotao-manage-back</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+               <includes>
+                   <include>*.properties</include>
+                   <include>**/*.xml</include>
+               </includes>
+                <!--该配置用于进行${}占位符的properties属性替换-->
+               <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.2</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <archiveClasses>${p.archiveClasses}</archiveClasses>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>development</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+
+                <p.archiveClasses>false</p.archiveClasses>
+
+                <!--env configuration-->
+                <REPOSITORY_PATH>/User/Alex_Bao/Document/1110/taotao-upload</REPOSITORY_PATH>
+                <IMAGE_BASE_URL>http://image.taotao.com</IMAGE_BASE_URL>
+                <TAOTAO_WEB_URL>http://www.taotao.com</TAOTAO_WEB_URL>
+
+                <!--httpclient configuration-->
+                <http.maxTotal>200</http.maxTotal>
+                <http.defaultMaxPerRoute>50</http.defaultMaxPerRoute>
+                <http.connectTimeout>1000</http.connectTimeout>
+                <http.connectionRequestTimeout>500</http.connectionRequestTimeout>
+                <http.socketTimeout>10000</http.socketTimeout>
+                <http.staleConnectionCheckEnabled>true</http.staleConnectionCheckEnabled>
+
+                <!--log4j configuration-->
+                <log4j.rootLogger>DEBUG,A1</log4j.rootLogger>
+                <log4j.logger.org.mybatis>DEBUG</log4j.logger.org.mybatis>
+
+                <!--jdbc configuration-->
+                <jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
+                <jdbc.url><![CDATA[jdbc:mysql://127.0.0.1:3306/taotao?useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true]]></jdbc.url>
+                <jdbc.username>root</jdbc.username>
+                <jdbc.password>123456</jdbc.password>
+
+                <!--rabbitmq configuration-->
+                <rabbitmq.host>127.0.0.1</rabbitmq.host>
+                <rabbitmq.port>5672</rabbitmq.port>
+                <rabbitmq.username>taotao</rabbitmq.username>
+                <rabbitmq.password>taotao</rabbitmq.password>
+                <rabbitmq.vhost>/taotao</rabbitmq.vhost>
+
+                <!--redis configuration-->
+                <redis.maxTotal>100</redis.maxTotal>
+                <redis.node1.host>127.0.0.1</redis.node1.host>
+                <redis.node1.port>6379</redis.node1.port>
+
+            </properties>
+        </profile>
+    </profiles>
+</project>

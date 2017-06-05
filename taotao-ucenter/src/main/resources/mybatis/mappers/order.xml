@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taotao.ucenter.mapper.OrderMapper">
+	<resultMap id="orderResultMap" type="order">
+		<id property="orderId" column="order_id" javaType="String"
+			jdbcType="VARCHAR" />
+		<result property="payment" column="payment" javaType="string"
+			jdbcType="VARCHAR" />
+		<result property="paymentType" column="payment_type" javaType="Integer"
+			jdbcType="INTEGER" />
+		<result property="postFee" column="post_fee" javaType="String"
+			jdbcType="VARCHAR" />
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER" />
+		<result property="createTime" column="create_time" />
+		<result property="updateTime" column="update_time" />
+		<result property="paymentTime" column="payment_time" />
+		<result property="consignTime" column="consign_time" />
+		<result property="endTime" column="end_time" />
+		<result property="closeTime" column="close_time" />
+		<result property="shippingName" column="shipping_name"
+			javaType="String" jdbcType="VARCHAR" />
+		<result property="shippingCode" column="shipping_code"
+			javaType="String" jdbcType="VARCHAR" />
+		<result property="userId" column="user_id" javaType="Long"
+			jdbcType="BIGINT" />
+		<result property="buyerMessage" column="buyer_message"
+			javaType="String" jdbcType="VARCHAR" />
+		<result property="buyerNick" column="buyer_nick" javaType="String"
+			jdbcType="VARCHAR" />
+		<result property="buyerRate" column="buyer_rate" javaType="Integer"
+			jdbcType="INTEGER" />
+		<association property="orderShipping" column="orderId"
+			javaType="OrderShipping">
+			<id property="orderId" column="order_id" />
+			<result property="receiverName" column="receiver_name"
+				javaType="String" jdbcType="VARCHAR" />
+			<result property="receiverPhone" column="receiver_phone"
+				javaType="String" jdbcType="VARCHAR" />
+			<result property="receiverMobile" column="receiver_mobile"
+				javaType="String" jdbcType="VARCHAR" />
+			<result property="receiverState" column="receiver_state"
+				javaType="String" jdbcType="VARCHAR" />
+			<result property="receiverCity" column="receiver_city"
+				javaType="String" jdbcType="VARCHAR" />
+			<result property="receiverDistrict" column="receiver_district"
+				javaType="String" jdbcType="VARCHAR" />
+			<result property="receiverAddress" column="receiver_address"
+				javaType="String" jdbcType="VARCHAR" />
+			<result property="receiverZip" column="receiver_zip" javaType="String"
+				jdbcType="VARCHAR" />
+		</association>
+		<!-- 延迟加载订单物流数据 <association property="orderShipping" javaType="OrderShipping" 
+			column="order_id" select="queryOrderShippingByOrderId" autoMapping="true"></association> -->
+		<collection property="orderItems" javaType="Arraylist"
+			column="orderId" ofType="OrderItem">
+			<id property="itemId" column="item_id" javaType="Long" jdbcType="BIGINT" />
+			<result property="num" column="num" javaType="Integer"
+				jdbcType="INTEGER" />
+			<result property="title" column="title" javaType="String"
+				jdbcType="VARCHAR" />
+			<result property="price" column="price" javaType="Long"
+				jdbcType="BIGINT" />
+			<result property="totalFee" column="total_fee" javaType="Long"
+				jdbcType="BIGINT" />
+			<result property="picPath" column="pic_path" javaType="String"
+				jdbcType="VARCHAR" />
+		</collection>
+	</resultMap>
+
+	<select id="queryOrderShippingByOrderId" resultType="OrderShipping"
+		parameterType="String">
+		SELECT * FROM tb_order_shipping WHERE order_id =
+		#{orderId};
+	</select>
+
+	<select id="queryOrderByUserIdAndCreateDateAndStatus"
+		parameterType="com.taotao.ucenter.vo.OrderSelectVo" resultMap="orderResultMap">
+		SELECT * FROM tb_order o
+		LEFT JOIN tb_order_item i ON o.order_id = i.order_id
+		LEFT JOIN tb_order_shipping s ON o.order_id = s.order_id
+		<where>
+			1=1
+			<if test="userId!=null">
+				and user_id=#{userId}
+			</if>
+			<if test="orderStatus!=null">
+				and status=#{orderStatus}
+			</if>
+			<if test="startDate!=null">
+				and create_time &gt;= #{startDate}
+			</if>
+			<if test="endDate!=null">
+				and create_time &lt; #{endDate}
+			</if>
+		</where>
+	</select>
+
+</mapper>

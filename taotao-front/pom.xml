@@ -1,0 +1,185 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>com.taotao.pom</groupId>
+        <artifactId>taotao-pom-base</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.taotao.web</groupId>
+    <artifactId>taotao-front</artifactId>
+    <packaging>war</packaging>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>taotao-front</name>
+    <dependencies>
+        <!-- 单元测试 -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.8.1</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.taotao.manage</groupId>
+            <artifactId>taotao-manage-pojo</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+        </dependency>
+
+        <!-- Jackson Json处理工具包 -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+
+        <!-- httpclient -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
+
+        <!-- JSP相关 -->
+        <dependency>
+            <groupId>jstl</groupId>
+            <artifactId>jstl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jsp-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Apache工具组件 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
+
+        <!-- 时间操作组件 -->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.amqp</groupId>
+            <artifactId>spring-rabbit</artifactId>
+            <version>1.4.0.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>com.taotao.common</groupId>
+            <artifactId>taotao-common</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>taotao-front</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>*.properties</exclude>
+                </excludes>
+            </testResource>
+        </testResources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <archiveClasses>${p.archiveClasses}</archiveClasses>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>development</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <p.archiveClasses>false</p.archiveClasses>
+
+                <!-- env configuration-->
+                <TAOTAO_MANAGE_URL>http://manage.taotao.com</TAOTAO_MANAGE_URL>
+                <TAOTAO_SSO_URL>http://sso.taotao.com</TAOTAO_SSO_URL>
+                <TAOTAO_ORDER_URL>http://order.taotao.com</TAOTAO_ORDER_URL>
+                <TAOTAO_CART_URL>http://cart.taotao.com</TAOTAO_CART_URL>
+
+                <TAOTAO_INDEX_AD1><![CDATA[/rest/content?categoryId=37&page=1&rows=6]]></TAOTAO_INDEX_AD1>
+                <TAOTAO_INDEX_AD2><![CDATA[/rest/content?categoryId=39&page=1&rows=1]]></TAOTAO_INDEX_AD2>
+                <TAOTAO_INDEX_AD3><![CDATA[/rest/content?categoryId=56&page=1&rows=10]]></TAOTAO_INDEX_AD3>
+                <TAOTAO_INDEX_AD4><![CDATA[/rest/content?categoryId=53&page=1&rows=10]]></TAOTAO_INDEX_AD4>
+                <TAOTAO_INDEX_LEFT1><![CDATA[/rest/content?categoryId=51&page=1&rows=16]]></TAOTAO_INDEX_LEFT1>
+                <TAOTAO_INDEX_LEFT2><![CDATA[/rest/content?categoryId=52&page=1&rows=1]]></TAOTAO_INDEX_LEFT2>
+
+                <!--httpclient configuration-->
+                <http.maxTotal>200</http.maxTotal>
+                <http.defaultMaxPerRoute>50</http.defaultMaxPerRoute>
+                <http.connectTimeout>1000</http.connectTimeout>
+                <http.connectionRequestTimeout>500</http.connectionRequestTimeout>
+                <http.socketTimeout>10000</http.socketTimeout>
+                <http.staleConnectionCheckEnabled>true</http.staleConnectionCheckEnabled>
+
+                <!--log4j configuration-->
+                <log4j.rootLogger>DEBUG,A1</log4j.rootLogger>
+                <log4j.logger.org.mybatis>DEBUG</log4j.logger.org.mybatis>
+
+                <!--rabbitmq.properties-->
+                <rabbitmq.host>127.0.0.1</rabbitmq.host>
+                <rabbitmq.port>5672</rabbitmq.port>
+                <rabbitmq.username>taotao</rabbitmq.username>
+                <rabbitmq.password>taotao</rabbitmq.password>
+                <rabbitmq.vhost>/taotao</rabbitmq.vhost>
+
+                <!--redis configuration-->
+                <redis.maxTotal>100</redis.maxTotal>
+                <redis.node1.host>127.0.0.1</redis.node1.host>
+                <redis.node1.port>6379</redis.node1.port>
+
+            </properties>
+        </profile>
+    </profiles>
+</project>

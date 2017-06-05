@@ -1,0 +1,30 @@
+#zookeeper configuration files#
+*.registry.properties
+*.registry.perperties.lock
+*.class
+*.iml
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# ide files #
+.classpath
+.project
+.mymetadata
+/.gradle/
+/.idea/
+/captures/
+.DS_Store
+.idea
+
+# setting folders #
+.settings/
+.svn/
+.bin/
+target/
+build/
+classes/
+route_package_back_dubbo.registry.properties.lock
+.gitignore
