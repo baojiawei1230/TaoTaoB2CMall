@@ -1,0 +1,30 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <groupId>com.zeus.pom</groupId>
+    <artifactId>zeus-pom-base</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.zeus.manage</groupId>
+  <artifactId>zeus-manage</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <modules>
+    <module>zeus-manage-pojo</module>
+    <module>zeus-manage-service</module>
+    <module>zeus-manage-mapper</module>
+    <module>zeus-manage-back</module>
+  </modules>
+  <packaging>pom</packaging>
+  <name>zeus-manage</name>
+
+  <dependencies>
+    <!--依赖公共模块 taotao-common -->
+    <dependency>
+      <groupId>com.zeus.common</groupId>
+      <artifactId>zeus-common</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+</project>
